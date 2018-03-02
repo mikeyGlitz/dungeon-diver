@@ -14,7 +14,9 @@ import {
 } from 'react-leaflet';
 import { EditControl } from 'react-leaflet-draw';
 import { Sidebar, Tab } from 'react-leaflet-sidebarv2';
+import PrintControl from 'react-leaflet-easyprint';
 
+import queryLocations from './helpers';
 import WikiContent from './WikiContent';
 import './MapPane.css';
 import mapMarker from './map-pin.svg';
@@ -34,6 +36,8 @@ const tilesize = 256;
 
 const minZoom = 0;
 const maxZoom = 6;
+const zoomLevel =
+  Math.ceil(Math.log(Math.max(dimension.width, dimension.height) / tilesize) / Math.log(2));
 
 export default class MapPane extends Component {
   state = {
@@ -77,16 +81,7 @@ export default class MapPane extends Component {
       'Fortresses',
     ];
 
-    Promise.all(places.map(place => fetch(`/data/${place}`)
-      .then(resp => resp.json())
-      .then(data => data.features
-        .filter(item => item.geometry.type === 'Point')
-        .map(({ properties: { name }, geometry }) => ({
-          name,
-          location: geometry.coordinates,
-          type: place,
-        })))))
-      .then(locations => locations.reduce((acc, location) => [...acc, ...location], []))
+    queryLocations(places)
       .then(locations => locations
         .map(location => ({ ...location, location: map.unproject(location.location) })))
       .then(locations => this.setState({
@@ -105,9 +100,6 @@ export default class MapPane extends Component {
         },
       }));
   }
-
-  zoomLevel =
-    Math.ceil(Math.log(Math.max(dimension.width, dimension.height) / tilesize) / Math.log(2));
 
   render() {
     const locations = Object.keys(this.state.locations)
@@ -144,7 +136,7 @@ export default class MapPane extends Component {
         </Sidebar>
         <Map
           className="sidebar-map"
-          zoom={this.zoomLevel}
+          zoom={zoomLevel}
           maxZoom={maxZoom}
           minZoom={minZoom}
           center={this.centerPoint || [0, 0]}
@@ -158,6 +150,13 @@ export default class MapPane extends Component {
           <FeatureGroup>
             <EditControl position="topright" />
           </FeatureGroup>
+          <PrintControl
+            position="topleft"
+            sizeModes={['Current', 'A4Portrait', 'A4Landscape']}
+            hideControlContainer={false}
+            title="Export as PNG"
+            exportOnly
+          />
           <TileLayer
             attribution={attribution}
             url="https://loremaps.github.io/LoreMaps-Faerun-Tiles/Tiles/{z}/{x}/{y}.png"
