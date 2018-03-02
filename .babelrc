@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    "transform-class-properties"
+  ],
+  "presets": [
+    ["airbnb", {
+      "targets": {
+        "browsers": ["last 2 versions"],
+        "node": 8
+      }
+    }],
+    "react"
+  ]
+}
