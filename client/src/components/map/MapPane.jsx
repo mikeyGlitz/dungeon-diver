@@ -16,8 +16,8 @@ import { EditControl } from 'react-leaflet-draw';
 import { Sidebar, Tab } from 'react-leaflet-sidebarv2';
 import PrintControl from 'react-leaflet-easyprint';
 
-import queryLocations from './helpers';
-import WikiContent from './WikiContent';
+import queryLocations from '../../helpers';
+import WikiContent from '../WikiContent';
 import './MapPane.css';
 import mapMarker from './map-pin.svg';
 
