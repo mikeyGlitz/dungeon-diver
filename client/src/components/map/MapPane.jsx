@@ -20,6 +20,8 @@ import queryLocations from '../../helpers';
 import WikiContent from '../WikiContent';
 import './MapPane.css';
 import mapMarker from './map-pin.svg';
+import diceIcon from './dice.svg';
+import diceUnselected from './dice-black.svg';
 
 const attribution = `
 <a href="https://loremaps.azurewebsites.net">LoreMaps</a> |
@@ -52,7 +54,8 @@ export default class MapPane extends Component {
       temples: [],
       ruins: [],
     },
-    selected: null,
+    selectedPin: null,
+    selected: 'dice',
   };
 
   componentDidMount() {
@@ -113,7 +116,12 @@ export default class MapPane extends Component {
                   position={location.location}
                   onclick={() => {
                     this.centerPoint = location.location;
-                    this.setState({ ...this.state, collapsed: false, selected: location.name });
+                    this.setState({
+                      ...this.state,
+                      collapsed: false,
+                      selected: 'wikiContent',
+                      selectedPin: location.name,
+                    });
                   }}
                 />
               ))}
@@ -125,14 +133,30 @@ export default class MapPane extends Component {
       <div style={{ height: '100%', width: '100%' }}>
         <Sidebar
           collapsed={this.state.collapsed}
-          onClose={() => this.setState({ ...this.state, selected: null, collapsed: true })}
-          onOpen={() => this.setState({ ...this.state, collapsed: false })}
+          selected={this.state.selected}
+          onClose={() => this.setState({ ...this.state, selectedPin: null, collapsed: true })}
+          onOpen={id => this.setState({ ...this.state, collapsed: false, selected: id })}
         >
-          {this.state.selected && (
-            <Tab header={this.state.selected} icon="fa fa-info">
-              <WikiContent page={this.state.selected} />
-            </Tab>
-          )}
+          <Tab
+            id="dice"
+            header="Dice Roller"
+            icon={<img
+              src={this.state.selected === 'dice' ? diceIcon : diceUnselected}
+              alt="dice"
+              style={{ height: 32, width: 32, margin: 3 }}
+            />}
+          >
+            <div>
+              Coming Soon...
+            </div>
+          </Tab>
+          <Tab id="wikiContent" header={this.state.selectedPin || 'Location Details'} icon="fa fa-info">
+            {
+              this.state.selectedPin ? <WikiContent page={this.state.selectedPin} /> :
+              <span>Nothing has been selected</span>
+          }
+
+          </Tab>
         </Sidebar>
         <Map
           className="sidebar-map"
@@ -141,7 +165,7 @@ export default class MapPane extends Component {
           minZoom={minZoom}
           center={this.centerPoint || [0, 0]}
           maxBounds={this.mapBounds}
-          onfocus={() => this.setState({ ...this.state, selected: null })}
+          onfocus={() => this.setState({ ...this.state, selectedPin: null })}
           ref={(map) => { this.map = map && map.leafletElement; }}
         >
           <LayersControl position="topright">
