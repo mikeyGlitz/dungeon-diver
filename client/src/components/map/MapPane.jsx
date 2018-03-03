@@ -150,10 +150,10 @@ export default class MapPane extends Component {
               Coming Soon...
             </div>
           </Tab>
-          <Tab id="wikiContent" header={this.state.selectedPin || 'Location Details'} icon="fa fa-info">
+          <Tab id="wikiContent" header={this.state.selectedPin || 'Location Details'} icon="fa fa-map-marker">
             {
               this.state.selectedPin ? <WikiContent page={this.state.selectedPin} /> :
-              <span>Nothing has been selected</span>
+              <span>No location has been selected</span>
           }
 
           </Tab>
