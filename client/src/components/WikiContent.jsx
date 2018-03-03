@@ -11,11 +11,9 @@ export default class WikiContent extends Component {
 
   componentWillMount() {
     const { page } = this.props;
-    fetch(`/wiki/${page}`)
+    fetch(`/wiki/places/${page}`)
       .then(resp => resp.json())
-      .then(({ content }) => this.setState({
-        content: content.replace('/wiki', 'https://forgottenrealms.wikia.com/wiki'),
-      }));
+      .then(({ content }) => this.setState({ content }));
   }
 
   render() {
