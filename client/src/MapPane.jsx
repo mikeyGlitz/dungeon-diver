@@ -116,7 +116,12 @@ export default class MapPane extends Component {
                   position={location.location}
                   onclick={() => {
                     this.centerPoint = location.location;
-                    this.setState({ ...this.state, collapsed: false, selected: 'wikiContent', selectedPin: location.name });
+                    this.setState({
+                      ...this.state,
+                      collapsed: false,
+                      selected: 'wikiContent',
+                      selectedPin: location.name,
+                    });
                   }}
                 />
               ))}
@@ -150,7 +155,7 @@ export default class MapPane extends Component {
               this.state.selectedPin ? <WikiContent page={this.state.selectedPin} /> :
               <span>Nothing has been selected</span>
           }
-            
+
           </Tab>
         </Sidebar>
         <Map
