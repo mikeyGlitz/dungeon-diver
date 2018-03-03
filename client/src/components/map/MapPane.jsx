@@ -1,5 +1,6 @@
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
+import 'sidebar-v2/css/leaflet-sidebar.css';
 import 'sidebar-v2/css/gmaps-sidebar.css';
 import 'font-awesome/css/font-awesome.css';
 import L from 'leaflet';
