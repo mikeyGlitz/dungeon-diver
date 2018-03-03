@@ -42,6 +42,19 @@ router.get('/monsters', (_, resp) => {
   queryMonsters().then(data => resp.json(data));
 });
 
+router.get('/monsters/searchsuggestions', (req, resp) => {
+  const { search = '', count = 5 } = req.query;
+  const term = search.toLowerCase();
+  queryMonsters()
+    .then((monsters) => {
+      Observable.from(monsters.sort())
+        .filter(monster => monster.toLowerCase().indexOf(term) >= 0)
+        .take(count)
+        .toArray()
+        .subscribe(suggestions => resp.json(suggestions));
+    });
+});
+
 router.get('/monsters/:name', (req, resp) => {
   const { name } = req.params;
   fetch(`${dungeonsUrl}/api.php?page=${name}&prop=text&redirects=true&action=parse&format=json`)
@@ -51,18 +64,6 @@ router.get('/monsters/:name', (req, resp) => {
         `No references found for ${name}.` :
         data.parse.text['*'].replace(/\/wiki/g, `${dungeonsUrl}/wiki`);
       resp.json({ content });
-    });
-});
-
-router.get('/monsters/searchsuggestions', (req, resp) => {
-  const { search: term, count = 5 } = req.query;
-  queryMonsters()
-    .then((monsters) => {
-      Observable.from(monsters)
-        .filter(monster => monster.toLowerCase().indexOf(term) >= 0)
-        .take(count)
-        .toArray()
-        .subscribe(suggestions => resp.json(suggestions));
     });
 });
 

@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
-import 'sidebar-v2/css/leaflet-sidebar.css';
+import 'sidebar-v2/css/gmaps-sidebar.css';
 import 'font-awesome/css/font-awesome.css';
 import L from 'leaflet';
 import React, { Component } from 'react';
@@ -18,15 +18,18 @@ import PrintControl from 'react-leaflet-easyprint';
 
 import queryLocations from '../../helpers';
 import WikiContent from '../WikiContent';
+import Beastiary from '../Beastiary';
+
 import './MapPane.css';
 import mapMarker from './map-pin.svg';
 import diceIcon from './dice.svg';
-import diceUnselected from './dice-black.svg';
+import monsterIcon from './monsters.svg';
 
 const attribution = `
 <a href="https://loremaps.azurewebsites.net">LoreMaps</a> |
 Map Data <a href="https://pocketplane.net">PocketPlane</a> |
-Info <a href="https://forgottenrealms.wikia.com">Forgotten Realms Wiki</a>
+Info <a href="https://forgottenrealms.wikia.com">Forgotten Realms Wiki</a> |
+Info <a href="https://dungeons.wikia.com">D&D Wiki</a>
 `;
 
 const dimension = {
@@ -141,7 +144,7 @@ export default class MapPane extends Component {
             id="dice"
             header="Dice Roller"
             icon={<img
-              src={this.state.selected === 'dice' ? diceIcon : diceUnselected}
+              src={diceIcon}
               alt="dice"
               style={{ height: 32, width: 32, margin: 3 }}
             />}
@@ -150,9 +153,20 @@ export default class MapPane extends Component {
               Coming Soon...
             </div>
           </Tab>
+          <Tab
+            id="monsters"
+            header="Bestiary"
+            icon={<img
+              src={monsterIcon}
+              alt="monsters"
+              style={{ height: 32, width: 32, margin: 3 }}
+            />}
+          >
+            <Beastiary />
+          </Tab>
           <Tab id="wikiContent" header={this.state.selectedPin || 'Location Details'} icon="fa fa-map-marker">
             {
-              this.state.selectedPin ? <WikiContent page={this.state.selectedPin} /> :
+              this.state.selectedPin ? <WikiContent ep="places" page={this.state.selectedPin} /> :
               <span>No location has been selected</span>
           }
 

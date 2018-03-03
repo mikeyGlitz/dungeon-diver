@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 export default class WikiContent extends Component {
   static propTypes = {
+    ep: PropTypes.string.isRequired,
     page: PropTypes.string.isRequired,
   }
   state = {
@@ -10,8 +11,8 @@ export default class WikiContent extends Component {
   };
 
   componentWillMount() {
-    const { page } = this.props;
-    fetch(`/wiki/places/${page}`)
+    const { ep, page } = this.props;
+    fetch(`/wiki/${ep}/${page}`)
       .then(resp => resp.json())
       .then(({ content }) => this.setState({ content }));
   }
