@@ -20,6 +20,7 @@ import PrintControl from 'react-leaflet-easyprint';
 import queryLocations from '../../helpers';
 import WikiContent from '../WikiContent';
 import Beastiary from '../Beastiary';
+import DiceRoller from '../dice-roller/DiceRoller';
 
 import './MapPane.css';
 import mapMarker from './map-marker-pin.svg';
@@ -151,9 +152,7 @@ export default class MapPane extends Component {
               style={{ height: 32, width: 32, margin: 3 }}
             />}
           >
-            <div>
-              Coming Soon...
-            </div>
+            <DiceRoller />
           </Tab>
           <Tab
             id="monsters"
