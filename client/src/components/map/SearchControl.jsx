@@ -2,15 +2,20 @@ import PropTypes from 'prop-types';
 import L, { Map } from 'leaflet';
 import { MapControl } from 'react-leaflet';
 import { GeoSearchControl, Provider as BaseProvider } from 'leaflet-geosearch';
+import { connect } from 'react-redux';
 
 /* eslint-disable class-methods-use-this */
-export default class SearchControl extends MapControl {
+class SearchControl extends MapControl {
   static contextTypes = {
     map: PropTypes.instanceOf(Map),
+  }
+  static propTypes = {
+    zoom: PropTypes.number.isRequired,
   }
 
   createLeafletElement() {
     const { map } = this.context;
+    const { zoom } = this.props;
     class Provider extends BaseProvider {
       endpoint({ query }) {
         const params = this.getParamString({
@@ -23,7 +28,7 @@ export default class SearchControl extends MapControl {
 
       parse({ data }) {
         return data.map((place) => {
-          const location = map.unproject(place.location, 5);
+          const location = map.unproject(place.location, zoom);
           const bounds = L.latLngBounds(location);
           return {
             x: location.lng,
@@ -52,3 +57,7 @@ export default class SearchControl extends MapControl {
   }
 }
 /* eslint-enable */
+
+export default connect(({ map }) => ({
+  zoom: map.zoom,
+}))(SearchControl);
