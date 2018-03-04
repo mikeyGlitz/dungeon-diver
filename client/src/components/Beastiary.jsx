@@ -14,6 +14,9 @@ export default class Beastiary extends Component {
       <div style={{ paddingTop: '3px' }} >
         <span>
           <AsyncTypeahead
+            ref={(typeahead) => {
+              this.typeahead = typeahead;
+            }}
             isLoading={this.state.loading}
             options={this.state.options}
             onSearch={
@@ -29,6 +32,9 @@ export default class Beastiary extends Component {
             }
             onChange={([selected]) => {
               this.setState({ selected });
+            }}
+            onFocus={() => {
+              this.typeahead.getInstance().clear();
             }}
             placeholder="Monster Name"
           />

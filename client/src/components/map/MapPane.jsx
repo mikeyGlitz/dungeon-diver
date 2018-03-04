@@ -22,9 +22,10 @@ import WikiContent from '../WikiContent';
 import Beastiary from '../Beastiary';
 
 import './MapPane.css';
-import mapMarker from './map-pin.svg';
+import mapMarker from './map-marker-pin.svg';
+import pinIcon from './map-pin.svg';
 import diceIcon from './dice.svg';
-import monsterIcon from './monsters.svg';
+import monsterIcon from './dragon.svg';
 
 const attribution = `
 <a href="https://loremaps.azurewebsites.net">LoreMaps</a> |
@@ -165,7 +166,15 @@ export default class MapPane extends Component {
           >
             <Beastiary />
           </Tab>
-          <Tab id="wikiContent" header={this.state.selectedPin || 'Location Details'} icon="fa fa-map-marker">
+          <Tab
+            id="wikiContent"
+            header={this.state.selectedPin || 'Location Details'}
+            icon={<img
+              src={pinIcon}
+              alt="location"
+              style={{ height: 32, width: 32, margin: 3 }}
+            />}
+          >
             {
               this.state.selectedPin ? <WikiContent ep="places" page={this.state.selectedPin} /> :
               <span>No location has been selected</span>
