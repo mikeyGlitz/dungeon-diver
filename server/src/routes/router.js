@@ -1,20 +1,11 @@
 const { Router } = require('express');
 const WikiRouter = require('./WikiRouter');
-const proxy = require('http-proxy-middleware');
+const LocationRouter = require('./DataRouter');
 
 const router = new Router();
 
-router.use('/data', proxy({
-  target: 'https://loremaps.azurewebsites.net',
-  changeOrigin: true,
-  pathRewrite: (path) => {
-    const index = path.lastIndexOf('/');
-    const name = path.slice(index + 1);
+router.use('/places', LocationRouter);
 
-    const finalPath = `/data/Faerun/${name}.json`;
-    return finalPath;
-  },
-}));
 router.use('/wiki', WikiRouter);
 
 // catch 404 and forward to error handler

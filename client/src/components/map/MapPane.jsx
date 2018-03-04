@@ -17,7 +17,6 @@ import { EditControl } from 'react-leaflet-draw';
 import { Sidebar, Tab } from 'react-leaflet-sidebarv2';
 import PrintControl from 'react-leaflet-easyprint';
 
-import queryLocations from '../../helpers';
 import WikiContent from '../WikiContent';
 import Beastiary from '../Beastiary';
 import DiceRoller from '../dice-roller/DiceRoller';
@@ -79,18 +78,8 @@ export default class MapPane extends Component {
 
     this.centerPoint = new L.LatLngBounds(this.mapBounds).getCenter();
 
-    const places = [
-      'Ports',
-      'Cities',
-      'Capitals',
-      'PortCapitals',
-      'Temples',
-      'Sites',
-      'Ruins',
-      'Fortresses',
-    ];
-
-    queryLocations(places)
+    fetch('/places')
+      .then(resp => resp.json())
       .then(locations => locations
         .map(location => ({ ...location, location: map.unproject(location.location) })))
       .then(locations => this.setState({
