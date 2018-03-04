@@ -4,11 +4,26 @@ const { Observable } = require('rxjs');
 
 const realmsUrl = 'https://forgottenrealms.wikia.com';
 
+const buildUrlString = params => Object.keys(params)
+  .map(key => `${key}=${params[key]}`)
+  .join('&');
+
 const router = new Router();
 
 router.get('/places/:name', (req, resp) => {
   const { name } = req.params;
-  fetch(`${realmsUrl}/api.php?page=${name}&prop=text&redirects=true&action=parse&format=json`)
+
+  const params = {
+    page: name,
+    prop: 'text',
+    redirects: true,
+    action: 'parse',
+    format: 'json',
+  };
+
+  const queryParams = buildUrlString(params);
+
+  fetch(`${realmsUrl}/api.php?${queryParams}`)
     .then(response => response.json())
     .then((data) => {
       const content = data.error ?
@@ -18,11 +33,31 @@ router.get('/places/:name', (req, resp) => {
     });
 });
 
-const dungeonsUrl = 'https://dungeons.wikia.com';
+const dungeonsUrl = 'https://dnd-wiki.org';
 
-const queryMonsters = async (pagesQ = '') => {
+const { Agent } = require('https');
+
+const agent = new Agent({
+  rejectUnauthorized: false,
+});
+
+const queryMonsters = async (cmcontinue) => {
+  const params = {
+    rawcontinue: '',
+    action: 'query',
+    list: 'categorymembers',
+    cmtitle: 'Category:Monster',
+    cmlimit: '500',
+    cmtype: 'page',
+    cmprop: 'title',
+    format: 'json',
+  };
+  if (cmcontinue) params.cmcontinue = cmcontinue;
+
+  const queryParams = buildUrlString(params);
+
   const response = await
-    fetch(`${dungeonsUrl}/api.php?action=query&list=categorymembers&cmtitle=Category:Monster&cmlimit=500&cmtype=page&cmprop=title${pagesQ}&format=json`);
+    fetch(`${dungeonsUrl}/w/api.php?${queryParams}`, { agent });
   let data = await response.json();
   data = {
     continue: data['query-continue'],
@@ -33,10 +68,9 @@ const queryMonsters = async (pagesQ = '') => {
   if (!data.continue) {
     return data.monsters;
   }
-  const page = `&cmcontinue=${data.continue.categorymembers.cmcontinue}`;
-  return [...data.monsters, ...await queryMonsters(page)];
+  const { cmcontinue: cmContinue } = data.continue.categorymembers;
+  return [...data.monsters, ...await queryMonsters(cmContinue)];
 };
-
 
 router.get('/monsters', (_, resp) => {
   queryMonsters().then(data => resp.json(data));
@@ -55,9 +89,20 @@ router.get('/monsters/searchsuggestions', (req, resp) => {
     });
 });
 
+
 router.get('/monsters/:name', (req, resp) => {
   const { name } = req.params;
-  fetch(`${dungeonsUrl}/api.php?page=${name}&prop=text&redirects=true&action=parse&format=json`)
+  const params = {
+    page: name,
+    prop: 'text',
+    redirects: true,
+    action: 'parse',
+    format: 'json',
+  };
+
+  const queryParams = buildUrlString(params);
+
+  fetch(`${dungeonsUrl}/w/api.php?${queryParams}`, { agent })
     .then(response => response.json())
     .then((data) => {
       const content = data.error ?
