@@ -1,5 +1,6 @@
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
+import 'leaflet-geosearch/assets/css/leaflet.css';
 import 'sidebar-v2/css/leaflet-sidebar.css';
 import 'sidebar-v2/css/gmaps-sidebar.css';
 import 'font-awesome/css/font-awesome.css';
@@ -20,6 +21,7 @@ import PrintControl from 'react-leaflet-easyprint';
 import WikiContent from '../WikiContent';
 import Beastiary from '../Beastiary';
 import DiceRoller from '../dice-roller/DiceRoller';
+import SearchControl from './SearchControl';
 
 import './MapPane.css';
 import mapMarker from './map-marker-pin.svg';
@@ -127,6 +129,7 @@ export default class MapPane extends Component {
     return (
       <div style={{ height: '100%', width: '100%' }}>
         <Sidebar
+          id="sidebar"
           collapsed={this.state.collapsed}
           selected={this.state.selected}
           onClose={() => this.setState({ ...this.state, selectedPin: null, collapsed: true })}
@@ -185,6 +188,9 @@ export default class MapPane extends Component {
           </LayersControl>
           <FeatureGroup>
             <EditControl position="topright" />
+          </FeatureGroup>
+          <FeatureGroup>
+            <SearchControl position="topleft" />
           </FeatureGroup>
           <PrintControl
             position="topleft"

@@ -36,7 +36,9 @@ router.get('/', (req, resp) => {
     })))
     .mergeAll()
     .filter((item) => {
-      const matches = search ? item.name.indexOf(search) >= 0 : true;
+      const matches = search ?
+        item.name.toLowerCase().indexOf(search.toLowerCase()) >= 0 :
+        true;
       return matches;
     })
     .take(limit || Infinity)
