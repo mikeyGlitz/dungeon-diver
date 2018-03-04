@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Grid } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 const DiceDisplay = props => (
-  <Grid style={{ textAlign: 'center' }}>
+  <div style={{ textAlign: 'center' }}>
     <h2>{props.heading}</h2>
     <div>
       <img
         src={props.image}
         alt={props.altText}
-        style={{ height: 100, width: 100 }}
+        style={{ height: '100px', width: '100px' }}
       />
     </div>
     <p><b>Last Roll:</b>&nbsp;{props.lastRoll}</p>
     <Button onClick={props.action}>Roll</Button>
     <hr />
-  </Grid>
+  </div>
 );
 
 DiceDisplay.propTypes = {

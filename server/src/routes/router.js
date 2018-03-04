@@ -1,10 +1,10 @@
 const { Router } = require('express');
 const WikiRouter = require('./WikiRouter');
-const LocationRouter = require('./DataRouter');
+const PlaceRouter = require('./PlaceRouter');
 
 const router = new Router();
 
-router.use('/places', LocationRouter);
+router.use('/places', PlaceRouter);
 
 router.use('/wiki', WikiRouter);
 

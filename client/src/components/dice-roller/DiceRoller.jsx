@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Grid } from 'react-bootstrap';
 import DiceDisplay from './DiceDisplay';
 
 import d4Icon from './d4.svg';
@@ -37,10 +36,10 @@ export default class DiceRoller extends Component {
 
   render() {
     return (
-      <Grid>
+      <div>
         <DiceDisplay
           image={d20Icon}
-          alt="d20"
+          altText="d20"
           heading="D20"
           lastRoll={this.state.d20}
           action={() => {
@@ -49,7 +48,7 @@ export default class DiceRoller extends Component {
         />
         <DiceDisplay
           image={d4Icon}
-          alt="D4"
+          altText="D4"
           heading="D4"
           lastRoll={this.state.d4}
           action={() => {
@@ -58,7 +57,7 @@ export default class DiceRoller extends Component {
         />
         <DiceDisplay
           image={d6Icon}
-          alt="d6"
+          altText="d6"
           heading="D6"
           lastRoll={this.state.d6}
           action={() => {
@@ -67,7 +66,7 @@ export default class DiceRoller extends Component {
         />
         <DiceDisplay
           image={d8Icon}
-          alt="d8"
+          altText="d8"
           heading="D8"
           lastRoll={this.state.d8}
           action={() => {
@@ -76,7 +75,7 @@ export default class DiceRoller extends Component {
         />
         <DiceDisplay
           image={d10Icon}
-          alt="d10"
+          altText="d10"
           heading="D10"
           lastRoll={this.state.d10}
           action={() => {
@@ -85,14 +84,14 @@ export default class DiceRoller extends Component {
         />
         <DiceDisplay
           image={d12Icon}
-          alt="d12"
+          altText="d12"
           heading="D12"
           lastRoll={this.state.d12}
           action={() => {
             this.rollDice(12);
           }}
         />
-      </Grid>
+      </div>
     );
   }
 }
