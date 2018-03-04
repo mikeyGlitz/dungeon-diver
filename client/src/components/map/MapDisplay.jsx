@@ -55,7 +55,6 @@ export default class MapDisplay extends Component {
     zoom: PropTypes.number.isRequired,
   }
   state = {
-    bounds: null,
     locations: {
       ports: [],
       cities: [],
@@ -72,18 +71,11 @@ export default class MapDisplay extends Component {
     const { map } = this;
     const southWest = map.unproject([0, dimension.height]);
     const northEast = map.unproject([dimension.width, 0]);
-    /* eslint-disable new-cap */
-    const bounds = new L.latLngBounds(southWest, northEast);
-    /* eslint-enable */
 
     this.mapBounds = [
       [northEast.lat, southWest.lng],
       [northEast.lng, southWest.lat].map(coord => Math.abs(coord)),
     ];
-
-    /* eslint-disable react/no-did-mount-set-state */
-    this.setState({ center: new L.LatLngBounds(this.mapBounds).getCenter() });
-    /* eslint-enable */
 
     const places = this.props.locations;
     const newLocations = Object.keys(places)
@@ -94,7 +86,10 @@ export default class MapDisplay extends Component {
         return acc;
       }, {});
     /* eslint-disable react/no-did-mount-set-state */
-    this.setState({ bounds, locations: newLocations });
+    this.setState({
+      locations: newLocations,
+      center: new L.LatLngBounds(this.mapBounds).getCenter(),
+    });
     /* eslint-enable */
   }
 
@@ -152,7 +147,7 @@ export default class MapDisplay extends Component {
             attribution={attribution}
             url="https://loremaps.github.io/LoreMaps-Faerun-Tiles/Tiles/{z}/{x}/{y}.png"
             noWrap={!0}
-            bounds={this.state.bounds}
+            bounds={this.mapBounds}
           />
         </Map>
       </div>
