@@ -28,7 +28,7 @@ const attribution = `
 <a href="https://loremaps.azurewebsites.net">LoreMaps</a> |
 Map Data <a href="https://pocketplane.net">PocketPlane</a> |
 Info <a href="https://forgottenrealms.wikia.com">Forgotten Realms Wiki</a> |
-Info <a href="https://dungeons.wikia.com">D&D Wiki</a>
+Info <a href="https://dnd-wiki.org">D&D Wiki</a>
 `;
 
 const dimension = {
