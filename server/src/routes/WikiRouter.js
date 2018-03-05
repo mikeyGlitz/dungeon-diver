@@ -73,20 +73,24 @@ const queryMonsters = async (cmcontinue) => {
 };
 
 router.get('/monsters', (_, resp) => {
-  queryMonsters().then(data => resp.json(data));
+  Observable.from(queryMonsters())
+    .mergeAll()
+    .toArray()
+    .map(monsters => monsters.sort())
+    .subscribe(data => resp.json(data));
 });
 
 router.get('/monsters/searchsuggestions', (req, resp) => {
   const { search = '', count = 5 } = req.query;
   const term = search.toLowerCase();
-  queryMonsters()
-    .then((monsters) => {
-      Observable.from(monsters.sort())
-        .filter(monster => monster.toLowerCase().indexOf(term) >= 0)
-        .take(count)
-        .toArray()
-        .subscribe(suggestions => resp.json(suggestions));
-    });
+  Observable.from(queryMonsters())
+    .mergeAll()
+    .toArray()
+    .flatMap(monsters => monsters.sort())
+    .filter(monster => monster.toLowerCase().indexOf(term) >= 0)
+    .take(count)
+    .toArray()
+    .subscribe(suggestions => resp.json(suggestions));
 });
 
 
