@@ -111,7 +111,9 @@ router.get('/monsters/:name', (req, resp) => {
     .then((data) => {
       const content = data.error ?
         `No references found for ${name}.` :
-        data.parse.text['*'].replace(/\/wiki/g, `${dungeonsUrl}/wiki`);
+        data.parse.text['*']
+          .replace(/\/wiki/g, `${dungeonsUrl}/wiki`)
+          .replace(/\/w\//g, `${dungeonsUrl}/w/`);
       resp.json({ content });
     });
 });
