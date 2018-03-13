@@ -7,6 +7,7 @@
     "debug": "nodemon"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
@@ -18,7 +19,8 @@
     "rxjs": "^5.5.6",
     "rxjs-fetch": "^2.1.6",
     "serve-favicon": "~2.4.5",
-    "ssl-root-cas": "^1.2.5"
+    "ssl-root-cas": "^1.2.5",
+    "winston": "^3.0.0-rc2"
   },
   "devDependencies": {
     "nodemon": "^1.17.1"

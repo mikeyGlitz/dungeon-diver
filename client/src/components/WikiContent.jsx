@@ -28,6 +28,7 @@ export default class WikiContent extends Component {
   }
 
   render() {
+    // eslint-disable-next-line
     return <div dangerouslySetInnerHTML={{ __html: this.state.content }} />;
   }
 }
